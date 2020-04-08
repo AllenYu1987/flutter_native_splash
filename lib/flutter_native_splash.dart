@@ -54,11 +54,11 @@ Map<String, dynamic> _getConfig() {
     config[entry.key] = entry.value;
   }
 
-  if (!config.containsKey('color')) {
-    stderr.writeln(InvalidConfigException(
-        "Your `flutter_native_splash` section does not contain a `color`."));
-    exit(1);
-  }
+  // if (!config.containsKey('color')) {
+  //   stderr.writeln(InvalidConfigException(
+  //       "Your `flutter_native_splash` section does not contain a `color`."));
+  //   exit(1);
+  // }
 
   return config;
 }

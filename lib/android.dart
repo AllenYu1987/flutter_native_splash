@@ -24,7 +24,7 @@ final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
 
 /// Create Android splash screen
 createSplash(String imagePath, String color, bool fill,
-    bool androidDisableFullscreen, androidMainActivityPath) async {
+    bool androidDisableFullscreen,String androidMainActivityPath) async {
   if (imagePath.isNotEmpty) {
     await _applyImage(imagePath);
   }
