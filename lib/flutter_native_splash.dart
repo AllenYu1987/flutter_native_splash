@@ -15,15 +15,16 @@ void createSplash() async {
 
 Future<void> createSplashByConfig(Map<String, dynamic> config) async {
   String image = config['image'] ?? '';
-  String color = config['color'].toString();
+  String color = config['color']??'#ff000000';
   bool fill = config['fill'] ?? false;
   bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
+  String androidMainActivityPath = config['android_main_activity_path'];
 
-  if (!config.containsKey("android") || config['android']) {
-    await android.createSplash(image, color, fill, androidDisableFullscreen);
+  if (!config.containsKey('android') || config['android']) {
+    await android.createSplash(image, color, fill, androidDisableFullscreen,androidMainActivityPath);
   }
 
-  if (!config.containsKey("ios") || config['ios']) {
+  if (!config.containsKey('ios') || config['ios']) {
     await ios.createSplash(image, color);
   }
 }

@@ -24,7 +24,7 @@ final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
 
 /// Create Android splash screen
 createSplash(String imagePath, String color, bool fill,
-    bool androidDisableFullscreen) async {
+    bool androidDisableFullscreen, androidMainActivityPath) async {
   if (imagePath.isNotEmpty) {
     await _applyImage(imagePath);
   }
@@ -39,7 +39,8 @@ createSplash(String imagePath, String color, bool fill,
     await _applyStylesXml();
   }
 
-  await _applyMainActivityUpdate(_generatePrimaryColorDarkFromColor(color));
+  await _applyMainActivityUpdate(
+      _generatePrimaryColorDarkFromColor(color), androidMainActivityPath);
 }
 
 /// Generates the primaryColorDark that will be used for the status bar
@@ -304,16 +305,20 @@ void _createStylesFileWithImagePath() {
 }
 
 /// Update MainActivity adding code to remove full screen mode after app load
-Future _applyMainActivityUpdate(String primaryColorDark) async {
-  final String language = await _javaOrKotlin();
-  String mainActivityPath;
+Future _applyMainActivityUpdate(
+    String primaryColorDark, String mainActivityPath) async {
+  String language;
+  if (mainActivityPath == null || mainActivityPath == '') {
+    language = await _javaOrKotlin();
 
-  if (language == 'java') {
-    mainActivityPath = await _getMainActivityJavaPath();
-  } else if (language == 'kotlin') {
-    mainActivityPath = await _getMainActivityKotlinPath();
+    if (language == 'java') {
+      mainActivityPath = await _getMainActivityJavaPath();
+    } else if (language == 'kotlin') {
+      mainActivityPath = await _getMainActivityKotlinPath();
+    }
+  } else {
+    language = mainActivityPath.endsWith('.kt') ? 'kotlin' : 'java';
   }
-
   final File mainActivityFile = File(mainActivityPath);
   final List<String> lines = await mainActivityFile.readAsLines();
 
